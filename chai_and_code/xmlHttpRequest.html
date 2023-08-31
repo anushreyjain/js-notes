@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XHR API Request</title>
+  </head>
+  <body>
+    <!-- It is basically AJAX programming, 
+        It basically contains state for every step , like
+    0	UNSENT	Client has been created. open() not called yet.
+    1	OPENED	open() has been called.
+    2	HEADERS_RECEIVED send() has been called, and headers and status are available.
+    3	LOADING	Downloading; responseText holds partial data.
+    4	DONE	The operation is complete.        
+    -->
+  </body>
+
+  <script>
+    const requestUrl = "https://api.github.com/users/anushreyjain";
+    // first we make a new Object of XML request
+    const xhr = new XMLHttpRequest();
+    // open takes 2 parametere, one is method of request and other is url
+    xhr.open("POST", requestUrl);
+    // open does not get called by itself, we need to call it
+    xhr.send();
+
+    // to know that state is being actually changed or not, we can use
+    console.log(xhr.readyState);
+
+    // now to monitor state contineously, we can use
+    xhr.onreadystatechange = function () {
+      console.log(xhr.readyState);
+      // now to get resposnse when we reach last state
+      if (xhr.readyState === 4) {
+          // NOTE - this will always give response in string type.
+          // so you need to convert into JSON to access property
+          const data = JSON.parse(this.responseText)
+          console.log(data);
+      }
+    };
+  </script>
+</html>
