@@ -148,3 +148,58 @@
 // ---------------------------------------------------------------------------------------------------
 
 // Transform an array
+
+// arr.map((iten, index, array) => (
+// ))
+// - itterate over each element of an array
+// - returns a new array
+
+// arr.sort()
+// - converts all elem into string for sorting and compare the strings.
+// - sort the array.
+// - to sort it as per our need, need to pass function as an argument.
+// NOTE - returns the sorted array, but main arr is modified.
+
+// arr.reverse()
+// - to reverse the order of elem in arr
+
+// str.split(delim, limitOfArray)
+// - it splits the string into an array by the given delimiter delim.
+// - it also has a second numeric argument, called as a limit of array length. Rarely Used.
+// For Example - we have string, seperated by come, so we can get every elem in array by using split(',).
+// let names = "Anu, Veenu, Hey";
+// let namesArr = names.split(",");
+// console.log(namesArr); // ['Anu', 'Veenu', 'Hey']
+
+// arr.join(glue)
+// - opposite of .split
+// - it creates a string of arr item joined by glue argument between them.
+
+// PRO TIP -
+// when you need to just iterate over an array, use forEach, for or for..of loop
+// when you need to iterate over an array and return data for each elem of array, use map and filter
+// when you need to reduce the array into one single calculated value, use reduce
+
+// arr.reduce(function(accumulator, item, index, array) {
+// }, [initial])
+// -- used to reduce the array into a single calculated value
+// accumulator - result of previous fucntion call, equals initial the first time
+// item - current item in an array
+// index - arr elem index
+// array - the given array
+// Working - takes the first value as accumulator and keeps the previous value and move onn
+// For Example -
+// let arr = [1, 2, 3, 4, 5, 6, 7];
+// let sumArr = arr.reduce((acc, item) => acc + item);
+// console.log(sumArr);
+
+// arr.isArray()
+// so arrays are also Object in JS, if we check the using typeOf operator.
+// so to check array we have isArray, it returns true or false.
+
+// thisArg parametere
+// it is an optional and last parametere, usually in find, filter and map
+// basically it points to this keyword for that function.
+// arr.find(func, thisArg);
+// arr.filter(func, thisArg);
+// arr.map(func, thisArg);
