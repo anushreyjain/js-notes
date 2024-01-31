@@ -487,11 +487,9 @@
 // now here, this of fn giveName is pointing to the global object, but we want it to point to obj object, we use call
 // giveName.call(obj, 24, Developer);
 
-
 // ------------apply---------------------
 // exactly same as call, but just take argumamets as a array.
 // giveName.apply(obj, [24, "Developer"]);
-
 
 // -----------bind---------------------
 // bind do not call the fn immedietely, but provide us with another fn, which we can call whenever we want.
@@ -500,4 +498,395 @@
 // anotherFn(23, 'Developer')
 
 //--------------------------------------
-// polyfill of call 
+// polyfill of call
+
+// const obj = {
+//   name: "Anushrey",
+// };
+
+// function getName() {
+//   console.log(this.name);
+// }
+
+// Function.prototype.myCall = function (context = {}, ...args) {
+//   //error handling
+//   if (typeof this !== "function") {
+//     throw new Error(this + "It is not callable");
+//   }
+
+//   context.fn = this;
+//   context.fn(...args);
+// };
+
+// getName.myCall(obj)
+
+//--------------------------------------
+// polyfill of apply
+
+// const obj = {
+//   name: "Anushrey",
+// };
+
+// function getName(price, age) {
+//   console.log(this.name, price, age);
+// }
+
+// Function.prototype.myApply = function (context = {}, args = []) {
+//   //error handling
+//   if (typeof this !== "function") {
+//     throw new Error(this + "It is not callable");
+//   }
+
+//   if (!Array.isArray(args)) {
+//     throw new Error("Please pass argumanets inside an array");
+//   }
+
+//   context.fn = this;
+//   context.fn(...args);
+// };
+
+// getName.myApply(obj, ['2Rs', 21])
+
+//--------------------------------------
+// polyfill of bind
+
+// const obj = {
+//   name: "Anushrey",
+// };
+
+// function getName(price, age) {
+//   console.log(this.name, price, age);
+// }
+
+// Function.prototype.myBind = function (context = {}, ...args) {
+//   //error handling
+//   if (typeof this !== "function") {
+//     throw new Error(this + "It is not callable");
+//   }
+//   context.fn = this;
+
+//   return function (...newArgs) {
+//     return context.fn(...args, ...newArgs);
+//   };
+// };
+
+// const newFunc = getName.myBind(obj);
+// newFunc("Rs 120", 24);
+
+// ---------------------------------------------------------------------------------------------------------
+// Promise
+
+// We need to understand callbacks first,
+// callback is basically calling a another funvtion into a function argument.
+
+// For Example -
+// console.log("Hello, STEP 1");
+
+// function getName(username, cb) {
+//   setTimeout(() => {
+//     cb(username);
+//   }, 1000);
+// }
+
+// function getPin(pin, cb) {
+//   setTimeout(() => {
+//     cb(pin);
+//   }, 500);
+// }
+
+// // now if we directly call it, we will get undefined because we will get result after 1000 ms, not instanatly.
+// // so here we have used callback, so that when the setTimeout is done, we gets the result in callback.
+// getName("Anushrey", (username) => {
+//   console.log(username);
+//   // now we want to get result of pin after username, so will use a callback inside it
+//   getPin(470661, (pin) => {
+//     console.log(pin);
+//   });
+// });
+
+// console.log("Bye, STEP 3");
+
+// but this callback inside a callback, make our code dirty and long,
+// and having callbacks inside callback and soo on is called as Callback Hell ---- IMP
+// So to overcome this, we have Promises --------
+// so promise represent the upcoming completion or failure of the async task and its resulting value.
+
+// PROMISE IMPLEMENTATION---------------------------
+
+// console.log("STEP 1");
+// Our Promise
+// const details = new Promise((resolve, reject) => {
+//   let temp = true;
+//   if (temp) resolve("Details are filled");
+//   else reject(new Error("Details are not filled"));
+// });
+
+// console.log(details);
+
+// Use the promise
+// details.then((res) => console.log(res)).catch((err) => console.log(err));
+// console.log("STEP 2");
+
+// PROMISES CHAINING------------------------------
+// when we combine more than one promise and call them one by one
+// function getName(username) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${username}`);
+//     }, 1000);
+//   });
+// }
+
+// function getPin(pin) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${pin}`);
+//     }, 500);
+//   });
+// }
+
+// function getContact(contact) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${contact}`);
+//     }, 1000);
+//   });
+// }
+
+// getName("Anushrey")
+//   .then((res) => {
+//     console.log(res);
+//     return getPin(470661);
+//   })
+//   .then((res) => {
+//     console.log(res);
+//     return getContact(8989836727);
+//   })
+//   .then((res) => {
+//     console.log(res);
+//   });
+
+// PROMISE COMBINATOR -----------------------
+// using .then again and again is also a lenght promise, so we can use promise combinator
+// so basically promise combinator allow us to execute more than one promise and return result accordingly.
+
+// There are four types of promise combinator---
+
+// our promises
+// function getName(username) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${username}`);
+//     }, 1000);
+//   });
+// }
+
+// function getPin(pin) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       reject(`This is ${pin}`);
+//     }, 500);
+//   });
+// }
+
+// function getContact(contact) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${contact}`);
+//     }, 1000);
+//   });
+// }
+
+// 1. Promise.all() --
+// this takes an array , it will take all the promise at once and execute them
+// and will give us result an an array of our promises
+// but if any one promise gets failed, the complete process will be get failed.
+// Example -
+// Promise.all([
+//   getName("Anushrey"),
+//   getPin(470661),
+//   getContact(8989836727),
+// ]).then((res) => console.log(res));
+
+// 2. Promise.race() --
+// this takes an array , it will take all the promise at once and execute them
+// but it will give the first promise that gets resolved or rejected.
+// Example -
+// Promise.race([
+//   getName("Anushrey"),
+//   getPin(470661),
+//   getContact(8989836727),
+// ]).then((res) => console.log(res));
+
+// 3. Promise.allSettled() --
+// this takes an array , it will take all the promise at once and execute them
+// and will give us result an an array of our promises.
+// this will return all promise in an array no matter they are resolved or rejected.
+// Example -
+// Promise.allSettled([
+//   getName("Anushrey"),
+//   getPin(470661),
+//   getContact(8989836727),
+// ]).then((res) => console.log(res));
+
+// 4. Promise.any() --
+// this takes an array , it will take all the promise at once and execute them
+// it will return only the first fulfilled promise and ignore all the rejected one.
+// if all promises fails, then only it will give the rejected promise.
+// Example -
+// Promise.any([
+//   getName("Anushrey"),
+//   getPin(470661),
+//   getContact(8989836727),
+// ]).then((res) => console.log(res));
+
+//------------------------------------------------------------------------------------------------------
+// async and await -
+// more advance way of handling the promise
+
+// this is one of the best approch to get our promises executed one after the other.
+
+// function getName(username) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${username}`);
+//     }, 1000);
+//   });
+// }
+
+// function getPin(pin) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${pin}`);
+//     }, 500);
+//   });
+// }
+
+// function getContact(contact) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${contact}`);
+//     }, 1000);
+//   });
+// }
+
+// here await keyword waits till the promise gets resolved or rejected and give the value.
+// NOTE - neeed to add async in the funtion to make it asyncronous.
+// const result = async () => {
+//   const message1 = await getName("Anushrey");
+//   const message2 = await getPin(470661);
+//   const message3 = await getContact(8989836727);
+//   console.log({message1,message2, message3});
+// };
+// result()
+
+// now if any of our promise gets failed, we need to handle error in our async await
+// we use try and catch------------
+// const result = async () => {
+//   try {
+//     const message1 = await getName("Anushrey");
+//     const message2 = await getPin(470661);
+//     const message3 = await getContact(8989836727);
+//     console.log({ message1, message2, message3 });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// result();
+
+// ----------------------
+// Qouetions on Promises
+
+// Que 1. make a function that accepts multiple promises in an array and resolve them recursively.
+
+// function getName(username) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${username}`);
+//     }, 1000);
+//   });
+// }
+
+// function getPin(pin) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${pin}`);
+//     }, 1000);
+//   });
+// }
+
+// function getContact(contact) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(`This is ${contact}`);
+//     }, 1000);
+//   });
+// }
+
+// this is the function----
+// function solvePromises(currentPromise) {
+//   if (currentPromise.length === 0) return;
+
+//   let getPromise = currentPromise.shift();
+//   getPromise.then((res) => console.log(res)).catch((err) => console.log(err));
+//   solvePromises(currentPromise);
+// }
+
+// solvePromises([getName("Anushrey"), getPin(470661), getContact(8989836727)]);
+
+//----------------------------------------------------------------------------------------------------------------
+// Debouncing
+// Debouncing helps us optmise how we call certain events.
+// basically it limits the amount of event calls for a certain amount of time.
+// Example - Give an API call in a sarchbox only when the user finish typing in the searchbox.
+
+// Debounce Ployfill ------
+// const myDebaounce = (cb, wait) => {
+//   let timer;
+//   return function (...args) {
+//     if (timer) clearInterval(timer);
+//     timer = setTimeout(() => {
+//       cb(...args);
+//     }, wait);
+//   };
+// };
+
+// Throttling------------
+// it is technique to limit the execution of event handler funciton, even when this event is triggered
+// contineously due to user actions.
+// Example - On twitter, when the scrollbar see that it has reached the position where 500px distance is left from the
+// bottom, it makes an API call to load more post and to give infinte scrooling effect for user.
+
+// Throttling Ployfill ------
+// const myThrottle = (cb, wait) => {
+//   let last = 0;
+//   return (...args) => {
+//     let now = new Date().getTime();
+//     if (now - last < d) return;
+//     last = now;
+//     return cb(...args);
+//   };
+// };
+
+// Que 1. Create a button and add debounce as follows -
+// --> show 'Button Pressed <X> Times' every time button is pressed.
+// --> Increase 'Triggered <Y> Times' count after 800ms of debounce.
+
+// const button = document.querySelector(".btn-increment");
+// const incrementPressed = document.querySelector(".increment-pressed");
+// const incrementTriggered = document.querySelector(".increment-triggered");
+
+// var count = 0;
+
+// button.addEventListener("click", function () {
+//   incrementPressed.innerHTML = ++count;
+// });
+
+// function triggerDebounce() {
+//   setTimeout(() => {
+
+//   }, 800);
+// }
+
+

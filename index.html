@@ -7,7 +7,7 @@
 
     <style>
       * {
-        margin: 0;
+        margin: 10px;
         padding: 0;
         box-sizing: border-box;
       }
@@ -17,10 +17,26 @@
         background-color: #414141;
         color: #fff;
       }
+
+      .btn-increment{
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        outline: none;
+        box-shadow: none;
+        border: none;
+        margin: 40px 0;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <h1 id="heading">Heading</h1>
-    <script src="./Questions.js"></script>
+
+    <button class="btn-increment">Incrment</button>
+
+    <p>Button Pressed <span class="increment-pressed">0</span> times</p>
+    <p>Triggered <span class="increment-triggered">0</span> times</p>
+    <script src="./roadsideCoder/ArrayQuestions.js"></script>
   </body>
 </html>
